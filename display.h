@@ -5,6 +5,7 @@
 #include <Arduino.h>
 
 #include "constants.h"
+#include "multimeter.h"
 
 #define DRAW_DELAY_MS 200
 
@@ -18,9 +19,10 @@ public:
 
 private:
     unsigned long nextDraw=0;
+    bool nextPage = false;
 
     U8GLIB_SH1106_128X64* u8g;
-    Multimeter* multimer;
+    Multimeter* multimeter;
 
     void draw();
     void update();

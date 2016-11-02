@@ -11,11 +11,11 @@ public:
 
 	void init();
 
-	void loop(unsigned long dtMs);
+	void loop(unsigned long nowMs, unsigned long dtMs);
 
 
 private:
-
+    void readSerial();
 
 };
 #endif
