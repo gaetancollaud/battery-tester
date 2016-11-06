@@ -6,12 +6,13 @@
 
 #include "constants.h"
 #include "multimeter.h"
+#include "statemanager.h"
 
 #define DRAW_DELAY_MS 200
 
 class Display{
 public:
-	Display(U8GLIB_SH1106_128X64* u8g, Multimeter* multimeter);
+	Display(U8GLIB_SH1106_128X64* u8g, Multimeter* multimeter, StateManager* stateManager);
 
 	void init();
 
@@ -23,6 +24,7 @@ private:
 
     U8GLIB_SH1106_128X64* u8g;
     Multimeter* multimeter;
+    StateManager* stateManager;
 
     void draw();
     void update();

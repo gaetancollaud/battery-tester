@@ -1,15 +1,24 @@
 #include "statemanager.h"
 
-StateManager::StateManager(){
+StateManager::StateManager(Multimeter* multimeter) : multimeter(multimeter){
+    this->state = INIT;
 }
 
 void StateManager::init(){
     pinMode(PIN_MOSFET, OUTPUT);
+    pinMode(PIN_CHARGING, INPUT);
+
     digitalWrite(PIN_MOSFET, LOW);
 }
 
 void StateManager::loop(unsigned long nowMs, unsigned long dtMs){
+    this->nextStates();
     this->readSerial();
+    this->applyState();
+}
+
+State StateManager::getState(){
+    return this->state;
 }
 
 void StateManager::readSerial(){
@@ -17,13 +26,29 @@ void StateManager::readSerial(){
         char read = Serial.read();
         switch(read){
             case '1':
-            Serial.println("discharging");
-            digitalWrite(PIN_MOSFET, HIGH);
+            this->state = DISCHARGING;
             break;
             case '0':
-            Serial.println("stop");
-            digitalWrite(PIN_MOSFET, LOW);
+            this->state = PAUSED;
             break;
         }
     }
+}
+
+void StateManager::nextStates(){
+    if(digitalRead(PIN_CHARGING) == LOW){
+        this->state = CHARGING;
+    }else if(this->multimeter->getBatteryVoltage() <= VOLTAGE_MIN){
+        Serial.print("voltage too low :");
+        Serial.println(this->multimeter->getBatteryVoltage());
+        this->state = DISCHARGED;
+    } else if(this->state == INIT){
+        this->state = PAUSED;
+    } else if(this->state == CHARGING){
+        this->state = PAUSED;
+    }
+}
+
+void StateManager::applyState(){
+    digitalWrite(PIN_MOSFET, this->state==DISCHARGING ? HIGH : LOW);
 }

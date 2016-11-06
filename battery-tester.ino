@@ -10,8 +10,8 @@ U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NONE);  // I2C / TWI
 unsigned long lastLoop = 0;
 
 Multimeter multimeter;
-StateManager stateManager;
-Display display(&u8g, &multimeter);
+StateManager stateManager(&multimeter);
+Display display(&u8g, &multimeter, &stateManager);
 
 void setup(){
     Serial.begin(115200);

@@ -26,7 +26,7 @@ private:
     float batterySum;
     float refSum;
 
-    float batteryVoltage;
+    float batteryVoltage=10;
     float refVoltage;
     float currentMa;
     float capacity;
