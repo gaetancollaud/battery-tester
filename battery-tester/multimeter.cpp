@@ -1,6 +1,15 @@
 #include "multimeter.h"
 
 Multimeter::Multimeter(){
+  this->lastAccCapacity = 0;
+  this->running = false;
+  this->readingCount = 0;
+  this->batterySum = 0;
+  this->refSum = 0;
+  this->batteryVoltage = 10;
+  this->refVoltage = 10;
+  this->currentMa = 0;
+  this->capacity = 0;
 }
 
 void Multimeter::init(){

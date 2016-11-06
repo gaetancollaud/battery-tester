@@ -5,6 +5,9 @@
 
 #include "constants.h"
 #include "multimeter.h"
+#include "sound.h"
+
+#define END_SOUND_DURATION 10000
 
 enum State{
     INIT,
@@ -16,7 +19,7 @@ enum State{
 };
 
 
-static inline char *stringFromState(enum State f)
+static inline const char *stringFromState(enum State f)
 {
     static const char *strings[] = {
         "Init",
@@ -32,7 +35,7 @@ static inline char *stringFromState(enum State f)
 
 class StateManager{
 public:
-	StateManager(Multimeter* multimeter);
+	StateManager(Multimeter* multimeter, Sound* sound);
 
 	void init();
 
@@ -43,6 +46,7 @@ public:
 private:
     State state;
     Multimeter* multimeter;
+    Sound* sound;
 
     void readSerial();
     void applyState();

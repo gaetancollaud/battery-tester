@@ -27,16 +27,16 @@ public:
     void setRunning(bool running);
 
 private:
-    unsigned long lastAccCapacity = 0;
-    bool running = false;
-    int readingCount = 0;
+    unsigned long lastAccCapacity;
+    bool running;
+    int readingCount;
     float batterySum;
     float refSum;
 
-    float batteryVoltage=10;
+    float batteryVoltage;
     float refVoltage;
-    float currentMa = 0;
-    float capacity = 0;
+    float currentMa;
+    float capacity;
 
     void read();
     void computeCapacity(unsigned long nowMs);

@@ -9,10 +9,7 @@ void Display::init(){
 }
 
 void Display::loop(unsigned long nowMs, unsigned long dtMs){
-//    if(nowMs>this->nextDraw){
-//        this->nextDraw = nowMs + DRAW_DELAY_MS;
-        this->update();
-//    }
+    this->update();
 }
 
 void Display::draw(){
@@ -26,7 +23,7 @@ void Display::draw(){
     if(state==DISCHARGING){
         u8g->drawStr(0, 40, " mA: ");
     }else{
-        char* stateStr = stringFromState(state);
+        const char* stateStr = stringFromState(state);
         u8g->drawStr(0, 40, stateStr);
     }
     u8g->drawStr(0, 60, "mAh: ");
@@ -53,4 +50,3 @@ void Display::update(){
 
     s = millis() - s;
 }
-

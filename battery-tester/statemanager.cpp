@@ -1,6 +1,6 @@
 #include "statemanager.h"
 
-StateManager::StateManager(Multimeter* multimeter) : multimeter(multimeter){
+StateManager::StateManager(Multimeter* multimeter, Sound* sound) : multimeter(multimeter), sound(sound){
     this->state = INIT;
 }
 
@@ -38,10 +38,11 @@ void StateManager::readSerial(){
 void StateManager::nextStates(){
     if(digitalRead(PIN_CHARGING) == LOW){
         this->state = CHARGING;
-    }else if(this->multimeter->getBatteryVoltage() <= VOLTAGE_MIN){
+    }else if(this->state==DISCHARGING && this->multimeter->getBatteryVoltage() <= VOLTAGE_MIN){
         Serial.print("voltage too low :");
         Serial.println(this->multimeter->getBatteryVoltage());
         this->state = DISCHARGED;
+        this->sound->play(END_SOUND_DURATION);
     } else if(this->state == INIT){
         this->state = DISCHARGING;
     } else if(this->state == CHARGING){
