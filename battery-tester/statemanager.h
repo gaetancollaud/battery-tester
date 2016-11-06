@@ -23,7 +23,7 @@ static inline const char *stringFromState(enum State f)
 {
     static const char *strings[] = {
         "Init",
-        "",
+        "Discharging",
         "Pause",
         "Discharged",
         "Charging",

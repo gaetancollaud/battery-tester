@@ -1,12 +1,12 @@
 #include <Arduino.h>
-
-
 #include <U8glib.h>
 
 #include "multimeter.h"
 #include "display.h"
 #include "statemanager.h"
 #include "sound.h"
+
+#ifndef UNIT_TEST
 
 U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NONE);  // I2C / TWI
 
@@ -37,3 +37,5 @@ void loop(){
 
     lastLoop = nowMs;
 }
+
+#endif
