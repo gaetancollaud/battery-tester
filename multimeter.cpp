@@ -3,19 +3,22 @@
 Multimeter::Multimeter(){
 }
 
-
 void Multimeter::init(){
     pinMode(PIN_BATTERY, INPUT);
     pinMode(PIN_REF, INPUT);
 }
 
 void Multimeter::loop(unsigned long nowMs, unsigned long dtMs){
-    this->timeAcc += dtMs;
     for(int i=0; i<READING_PER_LOOP;i++){
-        this->read(nowMs);
+        this->read();
         delay(1);
     }
-
+    if(!this->running){
+        //while not running keep the last time acc to now
+        this->lastAccCapacity = nowMs;
+    }else{
+        computeCapacity(nowMs);
+    }
 }
 
 float Multimeter::getBatteryVoltage(){
@@ -27,8 +30,15 @@ float Multimeter::getRefVoltage(){
 float Multimeter::getCurrentMa(){
     return this->currentMa;
 }
+float Multimeter::getCapacity(){
+    return this->capacity;
+}
 
-void Multimeter::read(unsigned long nowMs){
+void Multimeter::setRunning(bool v){
+    this->running = v;
+}
+
+void Multimeter::read(){
     this->readingCount++;
     this->batterySum += analogRead(PIN_BATTERY);
     this->refSum += analogRead(PIN_REF);
@@ -41,10 +51,20 @@ void Multimeter::read(unsigned long nowMs){
 
         Serial.print(this->batteryVoltage);
         Serial.print("\t");
-        Serial.println(this->refVoltage);
+        Serial.print(this->currentMa);
+        Serial.print("\t");
+        Serial.println(this->capacity);
 
         this->readingCount = 0;
         this->batterySum = 0.0;
         this->refSum = 0.0;
+    }
+}
+
+void Multimeter::computeCapacity(unsigned long nowMs){
+    unsigned long nextAcc = this->lastAccCapacity + CAPACITY_DELAY;
+    if(nowMs>=nextAcc){
+        this->capacity += this->currentMa * CAPACITY_BYHOUR;
+        this->lastAccCapacity = nextAcc;
     }
 }

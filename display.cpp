@@ -19,13 +19,12 @@ void Display::draw(){
     u8g->setFont(u8g_font_fub14r); // select font
     float volt = this->multimeter->getBatteryVoltage();
     float ma = this->multimeter->getCurrentMa();
+    float capacity = this->multimeter->getCapacity();
     State state = this->stateManager->getState();
-
-    float capacity = 5878.587;
 
     u8g->drawStr(0, 20, "Volt: ");   // put string of display at position X, Y
     if(state==DISCHARGING){
-        u8g->drawStr(0, 40, "Curr: ");
+        u8g->drawStr(0, 40, " mA: ");
     }else{
         char* stateStr = stringFromState(state);
         u8g->drawStr(0, 40, stateStr);

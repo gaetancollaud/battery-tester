@@ -11,4 +11,5 @@
 #define REF_VOLTAGE 4.64
 
 #define VOLTAGE_MAX 4.3
-#define VOLTAGE_MIN 2.9
+#define VOLTAGE_MIN 3.75
+//#define VOLTAGE_MIN 2.9

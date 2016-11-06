@@ -43,12 +43,14 @@ void StateManager::nextStates(){
         Serial.println(this->multimeter->getBatteryVoltage());
         this->state = DISCHARGED;
     } else if(this->state == INIT){
-        this->state = PAUSED;
+        this->state = DISCHARGING;
     } else if(this->state == CHARGING){
-        this->state = PAUSED;
+        this->state = DISCHARGING;
     }
 }
 
 void StateManager::applyState(){
-    digitalWrite(PIN_MOSFET, this->state==DISCHARGING ? HIGH : LOW);
+     bool discharging = this->state==DISCHARGING;
+    digitalWrite(PIN_MOSFET, discharging  ? HIGH : LOW);
+    this->multimeter->setRunning(discharging);
 }
